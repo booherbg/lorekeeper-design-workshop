@@ -44,7 +44,7 @@ cd lorekeeper
 ./start.sh
 ```
 
-The agent will welcome you, ask about your experience, and guide you through the design process. Just follow along and have a conversation.
+The agent will welcome you, ask about your experience level, and guide you through the design process. Just follow along and have a conversation.
 
 **Windows users or if `start.sh` doesn't work:** Open Claude Code in the project folder and say:
 
