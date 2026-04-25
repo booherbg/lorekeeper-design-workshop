@@ -103,7 +103,7 @@ At any point, you can ask the agent to generate an HTML report of your build pro
 
 When something looks wrong in your running app, screenshot it and paste directly into the chat:
 
-- **Mac:** Cmd+Shift+4 (select area) or Cmd+Shift+5 (screenshot options)
+- **Mac:** Cmd+Shift+4 (select area) or Cmd+Shift+5 (screenshot options), paste with ctrl+v (not cmd+v)
 - **Windows:** Win+Shift+S (Snipping Tool)
 
 The agent can look at your screenshot and help debug visual issues.
