@@ -1,6 +1,6 @@
 # Lorekeeper — Workshop Assignment
 
-The best bedtime stories have memory. The dragon remembers her promise from last Tuesday. The lighthouse keeper always smells like cinnamon and salt. The world feels real because it's *consistent* — the same characters, the same places, the same little details, story after story.
+The best bedtime stories are as interesting as they are consistent. The dragon remembers her promise from last Tuesday. The lighthouse keeper always smells like cinnamon and salt. The world feels real because it's *consistent* — the same characters, the same places, the same little details, story after story.
 
 **Lorekeeper** is a story generator that works this way. You build a world — characters with quirks, places with moods, lore that accumulates over time — and when you generate a story, it draws from everything you've created. The best details from each story feed back into the world as new lore, making the next one richer.
 
