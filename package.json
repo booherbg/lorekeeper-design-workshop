@@ -4,7 +4,7 @@
   "description": "The best bedtime stories are as interesting as they are consistent. The dragon remembers her promise from last Tuesday. The lighthouse keeper always smells like cinnamon and salt. The world feels real because it's *consistent* — the same characters, the same places, the same little details, story after story.",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "DATABASE_URL=file:./dev.db tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "DATABASE_URL=file:./test.db vitest run",

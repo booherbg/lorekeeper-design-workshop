@@ -10,6 +10,8 @@ import { storyRoutes } from "./routes/stories";
 import { loreRoutes } from "./routes/lore";
 import { prisma } from "./db";
 import fs from "node:fs";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { createMcpServer } from "./mcp-tools";
 
 export async function buildApp() {
   const app = Fastify();
@@ -91,6 +93,19 @@ export async function buildApp() {
       sessionCount: sessionCount > 0 ? sessionCount : null,
     }, { layout: false });
   });
+
+  // MCP over HTTP — stateless StreamableHTTP transport
+  const mcpHandler = async (request: any, reply: any) => {
+    const server = createMcpServer();
+    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
+    await server.connect(transport);
+    await transport.handleRequest(request.raw, reply.raw, request.body);
+    reply.hijack();
+  };
+
+  app.post("/mcp", mcpHandler);
+  app.get("/mcp", mcpHandler);
+  app.delete("/mcp", mcpHandler);
 
   await app.register(worldRoutes);
   await app.register(characterRoutes);

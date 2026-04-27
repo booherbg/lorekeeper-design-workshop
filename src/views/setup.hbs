@@ -1,19 +1,46 @@
 {{> breadcrumbs}}
 
-<h1 class="text-2xl font-bold mb-6">MCP Setup</h1>
+<h1 class="text-2xl font-bold text-ink-900 mb-6">MCP Setup</h1>
 
-<div class="prose max-w-none">
-  <div class="bg-white rounded-lg shadow p-6 mb-6">
-    <h2 class="text-lg font-semibold mb-3">What is MCP?</h2>
-    <p class="text-gray-600">The Model Context Protocol (MCP) lets AI assistants like Claude interact with external tools and data sources. By connecting Claude Code to Lorekeeper's MCP server, the AI can create worlds, build characters, generate stories, and manage lore — all through natural conversation.</p>
+<div class="space-y-6">
+  <div class="bg-white rounded-lg shadow-sm border border-parchment-200 p-6">
+    <h2 class="text-lg font-semibold text-ink-900 mb-3">What is MCP?</h2>
+    <p class="text-ink-700 opacity-80">The Model Context Protocol (MCP) lets AI assistants like Claude interact with external tools and data sources. By connecting to Lorekeeper's MCP server, the AI can create worlds, build characters, generate stories, and manage lore — all through natural conversation.</p>
   </div>
 
-  <div class="bg-white rounded-lg shadow p-6 mb-6">
-    <h2 class="text-lg font-semibold mb-3">Connection Instructions</h2>
-    <ol class="list-decimal list-inside space-y-3 text-gray-600">
-      <li>Open your Claude Code MCP settings file at <code class="bg-gray-100 px-1.5 py-0.5 rounded text-sm">.claude/settings.json</code></li>
-      <li>Add the Lorekeeper MCP server configuration:
-        <pre class="bg-gray-900 text-green-400 rounded-lg p-4 mt-2 overflow-x-auto text-sm"><code>{
+  <div class="bg-white rounded-lg shadow-sm border border-parchment-200 p-6">
+    <h2 class="text-lg font-semibold text-ink-900 mb-1">Option A: Connect via URL</h2>
+    <p class="text-sm text-parchment-300 mb-4">For Cursor, Claude Desktop, or any MCP client that connects to a running server</p>
+    <p class="text-ink-700 opacity-80 mb-3">Point your MCP client at the Lorekeeper web server's MCP endpoint. The web server must be running (<code class="bg-parchment-100 px-1.5 py-0.5 rounded text-sm">npm run dev</code>).</p>
+    <div class="space-y-4">
+      <div>
+        <h3 class="font-medium text-ink-800 mb-2">Cursor</h3>
+        <p class="text-sm text-ink-700 opacity-75 mb-2">In Cursor Settings &rarr; MCP, add a new server with type <strong>URL</strong>:</p>
+        <pre class="bg-ink-900 text-green-400 rounded-lg p-4 overflow-x-auto text-sm"><code>http://localhost:3000/mcp</code></pre>
+      </div>
+      <div>
+        <h3 class="font-medium text-ink-800 mb-2">Claude Desktop</h3>
+        <p class="text-sm text-ink-700 opacity-75 mb-2">Edit <code class="bg-parchment-100 px-1.5 py-0.5 rounded text-sm">claude_desktop_config.json</code>:</p>
+        <pre class="bg-ink-900 text-green-400 rounded-lg p-4 overflow-x-auto text-sm"><code>{
+  "mcpServers": {
+    "lorekeeper": {
+      "url": "http://localhost:3000/mcp"
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-parchment-200 p-6">
+    <h2 class="text-lg font-semibold text-ink-900 mb-1">Option B: Local stdio server</h2>
+    <p class="text-sm text-parchment-300 mb-4">For Claude Code or development — spawns the server process directly</p>
+    <p class="text-ink-700 opacity-80 mb-3">The MCP client launches the server as a local process. No web server needed — it communicates over stdin/stdout.</p>
+    <div class="space-y-4">
+      <div>
+        <h3 class="font-medium text-ink-800 mb-2">Claude Code</h3>
+        <p class="text-sm text-ink-700 opacity-75 mb-2">Add to <code class="bg-parchment-100 px-1.5 py-0.5 rounded text-sm">.claude/settings.json</code>:</p>
+        <pre class="bg-ink-900 text-green-400 rounded-lg p-4 overflow-x-auto text-sm"><code>{
   "mcpServers": {
     "lorekeeper": {
       "command": "npx",
@@ -24,50 +51,60 @@
     }
   }
 }</code></pre>
-      </li>
-      <li>Restart Claude Code to pick up the new server</li>
-      <li>Test the connection by asking Claude: "List all worlds in Lorekeeper"</li>
-    </ol>
+      </div>
+      <div>
+        <h3 class="font-medium text-ink-800 mb-2">Cursor (stdio alternative)</h3>
+        <p class="text-sm text-ink-700 opacity-75 mb-2">In Cursor Settings &rarr; MCP, add with type <strong>Command</strong>:</p>
+        <pre class="bg-ink-900 text-green-400 rounded-lg p-4 overflow-x-auto text-sm"><code>npx tsx {{projectPath}}/src/mcp-server.ts</code></pre>
+        <p class="text-sm text-ink-700 opacity-75 mt-1">Set env var: <code class="bg-parchment-100 px-1.5 py-0.5 rounded text-sm">DATABASE_URL=file:{{projectPath}}/prisma/dev.db</code></p>
+      </div>
+    </div>
   </div>
 
-  <div class="bg-white rounded-lg shadow p-6 mb-6">
-    <h2 class="text-lg font-semibold mb-3">Available Tools</h2>
+  <div class="bg-white rounded-lg shadow-sm border border-parchment-200 p-6">
+    <h2 class="text-lg font-semibold text-ink-900 mb-3">Available Tools (22)</h2>
 
-    <h3 class="font-medium text-gray-800 mt-4 mb-2">CRUD Tools</h3>
-    <div class="grid gap-2">
-      <div class="text-sm"><code class="text-blue-600">list_worlds</code> — List all worlds</div>
-      <div class="text-sm"><code class="text-blue-600">get_world</code> — Get world details and stats</div>
-      <div class="text-sm"><code class="text-blue-600">create_world</code> — Create a new world</div>
-      <div class="text-sm"><code class="text-blue-600">update_world</code> — Update world name/description</div>
-      <div class="text-sm"><code class="text-blue-600">delete_world</code> — Delete a world and all contents</div>
-      <div class="text-sm"><code class="text-blue-600">list_characters</code> — List characters in a world</div>
-      <div class="text-sm"><code class="text-blue-600">get_character</code> — Get character with description</div>
-      <div class="text-sm"><code class="text-blue-600">create_character</code> — Create a character</div>
-      <div class="text-sm"><code class="text-blue-600">update_character</code> — Update character</div>
-      <div class="text-sm"><code class="text-blue-600">delete_character</code> — Delete a character</div>
-      <div class="text-sm"><code class="text-blue-600">list_locations</code> — List locations in a world</div>
-      <div class="text-sm"><code class="text-blue-600">get_location</code> — Get location with description</div>
-      <div class="text-sm"><code class="text-blue-600">create_location</code> — Create a location</div>
-      <div class="text-sm"><code class="text-blue-600">update_location</code> — Update location</div>
-      <div class="text-sm"><code class="text-blue-600">delete_location</code> — Delete a location</div>
-      <div class="text-sm"><code class="text-blue-600">list_stories</code> — List stories in a world</div>
-      <div class="text-sm"><code class="text-blue-600">get_story</code> — Get story with related data</div>
-      <div class="text-sm"><code class="text-blue-600">delete_story</code> — Delete a story</div>
-      <div class="text-sm"><code class="text-blue-600">list_lore</code> — List lore artifacts (filterable)</div>
-      <div class="text-sm"><code class="text-blue-600">update_lore_status</code> — Keep or discard lore</div>
+    <h3 class="font-medium text-ink-800 mt-4 mb-2">CRUD Tools</h3>
+    <div class="grid gap-1.5">
+      <div class="text-sm"><code class="text-ember-600">list_worlds</code> — List all worlds</div>
+      <div class="text-sm"><code class="text-ember-600">get_world</code> — Get world details and stats</div>
+      <div class="text-sm"><code class="text-ember-600">create_world</code> — Create a new world</div>
+      <div class="text-sm"><code class="text-ember-600">update_world</code> — Update world name/description</div>
+      <div class="text-sm"><code class="text-ember-600">delete_world</code> — Delete a world and all contents</div>
+      <div class="text-sm"><code class="text-ember-600">list_characters</code> — List characters in a world</div>
+      <div class="text-sm"><code class="text-ember-600">get_character</code> — Get character with description</div>
+      <div class="text-sm"><code class="text-ember-600">create_character</code> — Create a character</div>
+      <div class="text-sm"><code class="text-ember-600">update_character</code> — Update character</div>
+      <div class="text-sm"><code class="text-ember-600">delete_character</code> — Delete a character</div>
+      <div class="text-sm"><code class="text-ember-600">list_locations</code> — List locations in a world</div>
+      <div class="text-sm"><code class="text-ember-600">get_location</code> — Get location with description</div>
+      <div class="text-sm"><code class="text-ember-600">create_location</code> — Create a location</div>
+      <div class="text-sm"><code class="text-ember-600">update_location</code> — Update location</div>
+      <div class="text-sm"><code class="text-ember-600">delete_location</code> — Delete a location</div>
+      <div class="text-sm"><code class="text-ember-600">list_stories</code> — List stories in a world</div>
+      <div class="text-sm"><code class="text-ember-600">get_story</code> — Get story with related data</div>
+      <div class="text-sm"><code class="text-ember-600">delete_story</code> — Delete a story</div>
+      <div class="text-sm"><code class="text-ember-600">list_lore</code> — List lore artifacts (filterable)</div>
+      <div class="text-sm"><code class="text-ember-600">update_lore_status</code> — Keep or discard lore</div>
     </div>
 
-    <h3 class="font-medium text-gray-800 mt-4 mb-2">Generation Tools</h3>
-    <div class="grid gap-2">
-      <div class="text-sm"><code class="text-blue-600">get_world_context</code> — Full world context for AI generation</div>
-      <div class="text-sm"><code class="text-blue-600">save_story</code> — Save a generated story with character/location links</div>
-      <div class="text-sm"><code class="text-blue-600">save_lore_artifacts</code> — Save a batch of lore artifacts from a story</div>
+    <h3 class="font-medium text-ink-800 mt-4 mb-2">Generation Tools</h3>
+    <div class="grid gap-1.5">
+      <div class="text-sm"><code class="text-ember-600">get_world_context</code> — Full world context for AI generation</div>
+      <div class="text-sm"><code class="text-ember-600">save_story</code> — Save a generated story with character/location links</div>
+      <div class="text-sm"><code class="text-ember-600">save_lore_artifacts</code> — Save a batch of lore artifacts from a story</div>
     </div>
 
-    <h3 class="font-medium text-gray-800 mt-4 mb-2">Advisory Tools</h3>
-    <div class="grid gap-2">
-      <div class="text-sm"><code class="text-blue-600">check_consistency</code> — World data for consistency review</div>
-      <div class="text-sm"><code class="text-blue-600">suggest_connections</code> — Character/location data for connection suggestions</div>
+    <h3 class="font-medium text-ink-800 mt-4 mb-2">Advisory Tools</h3>
+    <div class="grid gap-1.5">
+      <div class="text-sm"><code class="text-ember-600">check_consistency</code> — World data for consistency review</div>
+      <div class="text-sm"><code class="text-ember-600">suggest_connections</code> — Character/location data for connection suggestions</div>
     </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-parchment-200 p-6">
+    <h2 class="text-lg font-semibold text-ink-900 mb-3">Skill File</h2>
+    <p class="text-ink-700 opacity-80 mb-3">For a guided world-building experience, install the Lorekeeper advisor skill file. It teaches the AI how to collaborate on world-building: creating characters, generating stories, and managing lore.</p>
+    <p class="text-sm text-ink-700 opacity-75">The skill file is at <code class="bg-parchment-100 px-1.5 py-0.5 rounded text-sm">skills/lorekeeper-advisor.md</code> in the project directory.</p>
   </div>
 </div>

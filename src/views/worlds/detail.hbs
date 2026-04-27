@@ -1,42 +1,42 @@
 {{> breadcrumbs}}
 
 <div class="flex items-center justify-between mb-4">
-  <h1 class="text-2xl font-bold">{{world.name}}</h1>
+  <h1 class="text-2xl font-bold text-ink-900">{{world.name}}</h1>
   <div class="flex gap-2">
-    <a href="/worlds/{{world.id}}/edit" class="px-3 py-1.5 rounded border hover:bg-gray-100 text-sm">Edit</a>
+    <a href="/worlds/{{world.id}}/edit" class="px-3 py-1.5 rounded-lg border border-parchment-200 hover:bg-parchment-100 text-sm transition-colors">Edit</a>
     <form method="POST" action="/worlds/{{world.id}}/delete" onsubmit="return confirm('This deletes everything in this world. Continue?')">
-      <button type="submit" class="px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50 text-sm">Delete</button>
+      <button type="submit" class="px-3 py-1.5 rounded-lg border border-red-300 text-red-600 hover:bg-red-50 text-sm transition-colors">Delete</button>
     </form>
   </div>
 </div>
 
 {{#if world.description}}
-  <p class="text-gray-600 mb-6 whitespace-pre-line">{{world.description}}</p>
+  <p class="text-ink-700 opacity-80 mb-6 whitespace-pre-line">{{world.description}}</p>
 {{/if}}
 
 {{#if showStoryCallout}}
-  <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mt-6">
-    <h2 class="text-lg font-semibold text-blue-900 mb-2">Ready for a story?</h2>
-    <p class="text-blue-800 text-sm mb-3">Your world has {{world.characterCount}} character{{#unless (eq world.characterCount 1)}}s{{/unless}} and {{world.locationCount}} location{{#unless (eq world.locationCount 1)}}s{{/unless}}. Ask your AI advisor to generate a story — it'll draw from everything you've built here.</p>
-    <a href="/setup" class="text-blue-600 text-sm underline">Set up MCP connection</a>
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-5 mt-6">
+    <h2 class="text-lg font-semibold text-amber-900 mb-2">Ready for a story?</h2>
+    <p class="text-amber-800 text-sm mb-3">Your world has {{world.characterCount}} character{{#unless (eq world.characterCount 1)}}s{{/unless}} and {{world.locationCount}} location{{#unless (eq world.locationCount 1)}}s{{/unless}}. Ask your AI advisor to generate a story — it'll draw from everything you've built here.</p>
+    <a href="/setup" class="text-ember-500 text-sm font-medium hover:text-ember-700">Set up MCP connection &rarr;</a>
   </div>
 {{/if}}
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-  <a href="/worlds/{{world.id}}/characters" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">{{world.characterCount}}</div>
-    <div class="text-gray-500 text-sm">Characters</div>
+  <a href="/worlds/{{world.id}}/characters" class="bg-white rounded-lg shadow-sm border border-parchment-200 p-4 text-center hover:shadow-md hover:border-ember-400 transition-all">
+    <div class="text-2xl font-bold text-ember-500">{{world.characterCount}}</div>
+    <div class="text-parchment-300 text-sm">Characters</div>
   </a>
-  <a href="/worlds/{{world.id}}/locations" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">{{world.locationCount}}</div>
-    <div class="text-gray-500 text-sm">Locations</div>
+  <a href="/worlds/{{world.id}}/locations" class="bg-white rounded-lg shadow-sm border border-parchment-200 p-4 text-center hover:shadow-md hover:border-moss-500 transition-all">
+    <div class="text-2xl font-bold text-moss-500">{{world.locationCount}}</div>
+    <div class="text-parchment-300 text-sm">Locations</div>
   </a>
-  <a href="/worlds/{{world.id}}/stories" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">{{world.storyCount}}</div>
-    <div class="text-gray-500 text-sm">Stories</div>
+  <a href="/worlds/{{world.id}}/stories" class="bg-white rounded-lg shadow-sm border border-parchment-200 p-4 text-center hover:shadow-md hover:border-ink-700 transition-all">
+    <div class="text-2xl font-bold text-ink-700">{{world.storyCount}}</div>
+    <div class="text-parchment-300 text-sm">Stories</div>
   </a>
-  <a href="/worlds/{{world.id}}/lore" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">{{world.loreCount}}</div>
-    <div class="text-gray-500 text-sm">Lore</div>
+  <a href="/worlds/{{world.id}}/lore" class="bg-white rounded-lg shadow-sm border border-parchment-200 p-4 text-center hover:shadow-md hover:border-amber-400 transition-all">
+    <div class="text-2xl font-bold text-amber-600">{{world.loreCount}}</div>
+    <div class="text-parchment-300 text-sm">Lore</div>
   </a>
 </div>

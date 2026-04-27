@@ -1,17 +1,17 @@
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold">Worlds</h1>
-  <a href="/worlds/new" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700">Create World</a>
+  <h1 class="text-2xl font-bold text-ink-900">Worlds</h1>
+  <a href="/worlds/new" class="bg-ember-500 text-white px-4 py-2 rounded-lg hover:bg-ember-600 transition-colors">Create World</a>
 </div>
 
 {{#if worlds.length}}
   <div class="grid gap-4">
     {{#each worlds}}
-      <a href="/worlds/{{this.id}}" class="block bg-white rounded-lg shadow p-5 hover:shadow-md transition-shadow">
-        <h2 class="text-lg font-semibold">{{this.name}}</h2>
+      <a href="/worlds/{{this.id}}" class="block bg-white rounded-lg shadow-sm border border-parchment-200 p-5 hover:shadow-md hover:border-ember-400 transition-all">
+        <h2 class="text-lg font-semibold text-ink-900">{{this.name}}</h2>
         {{#if this.description}}
-          <p class="text-gray-600 mt-1">{{truncate this.description 150}}</p>
+          <p class="text-ink-700 mt-1 opacity-75">{{truncate this.description 150}}</p>
         {{/if}}
-        <div class="flex gap-4 mt-2 text-sm text-gray-400">
+        <div class="flex gap-4 mt-3 text-sm text-parchment-300">
           <span>{{this.characterCount}} character{{#unless (eq this.characterCount 1)}}s{{/unless}}</span>
           <span>{{this.locationCount}} location{{#unless (eq this.locationCount 1)}}s{{/unless}}</span>
           <span>{{this.storyCount}} stor{{#if (eq this.storyCount 1)}}y{{else}}ies{{/if}}</span>
@@ -20,8 +20,10 @@
     {{/each}}
   </div>
 {{else}}
-  <div class="text-center py-12 text-gray-500">
-    <p class="text-lg mb-4">Create your first world to get started.</p>
-    <a href="/worlds/new" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700">Create World</a>
+  <div class="text-center py-16">
+    <div class="text-4xl mb-4">📜</div>
+    <p class="text-lg text-ink-700 mb-2">Every great tale begins with a world.</p>
+    <p class="text-parchment-300 mb-6">Create your first world to get started.</p>
+    <a href="/worlds/new" class="bg-ember-500 text-white px-5 py-2.5 rounded-lg hover:bg-ember-600 transition-colors">Create World</a>
   </div>
 {{/if}}

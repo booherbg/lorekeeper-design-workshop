@@ -5,15 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lorekeeper</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            parchment: { 50: '#faf8f5', 100: '#f3efe8', 200: '#e8e0d4', 300: '#d4c8b4' },
+            ink: { 700: '#3d3425', 800: '#2c2519', 900: '#1e1a12' },
+            ember: { 400: '#d97742', 500: '#c4632e', 600: '#a8511f', 700: '#8c421a' },
+            moss: { 500: '#5a7a52', 600: '#4a6644', 700: '#3b5236' },
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-gray-50 min-h-screen">
-  <nav class="bg-gray-900 text-white">
+<body class="bg-parchment-50 min-h-screen text-ink-800">
+  <nav class="bg-ink-900">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="/worlds" class="text-xl font-bold tracking-tight">Lorekeeper</a>
+      <a href="/worlds" class="text-xl font-bold tracking-tight text-parchment-100">Lorekeeper</a>
+      <div class="flex items-center gap-4">
+        <a href="/worlds" class="text-parchment-300 hover:text-parchment-100 text-sm">Worlds</a>
+        <a href="/setup" class="text-parchment-300 hover:text-parchment-100 text-sm">Setup</a>
+      </div>
     </div>
   </nav>
   <main class="max-w-5xl mx-auto px-4 py-8">
     {{{body}}}
   </main>
+  <footer class="text-center text-sm text-parchment-300 pb-6">
+    <a href="/lorekeeper" class="hover:text-ink-700">~</a>
+  </footer>
 </body>
 </html>

@@ -1,22 +1,24 @@
 {{> breadcrumbs}}
 
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold">Locations</h1>
-  <a href="/worlds/{{world.id}}/locations/new" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700">Create Location</a>
+  <h1 class="text-2xl font-bold text-ink-900">Locations</h1>
+  <a href="/worlds/{{world.id}}/locations/new" class="bg-ember-500 text-white px-4 py-2 rounded-lg hover:bg-ember-600 transition-colors">Create Location</a>
 </div>
 
 {{#if locations.length}}
   <div class="grid gap-4">
     {{#each locations}}
-      <a href="/worlds/{{../world.id}}/locations/{{this.id}}" class="block bg-white rounded-lg shadow p-5 hover:shadow-md transition-shadow">
-        <h2 class="text-lg font-semibold">{{this.name}}</h2>
-        <p class="text-gray-600 mt-1">{{truncate this.description 150}}</p>
+      <a href="/worlds/{{../world.id}}/locations/{{this.id}}" class="block bg-white rounded-lg shadow-sm border border-parchment-200 p-5 hover:shadow-md hover:border-moss-500 transition-all">
+        <h2 class="text-lg font-semibold text-ink-900">{{this.name}}</h2>
+        <p class="text-ink-700 opacity-75 mt-1">{{truncate this.description 150}}</p>
       </a>
     {{/each}}
   </div>
 {{else}}
-  <div class="text-center py-12 text-gray-500">
-    <p class="text-lg mb-4">Every world needs places. Create your first location.</p>
-    <a href="/worlds/{{world.id}}/locations/new" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700">Create Location</a>
+  <div class="text-center py-16">
+    <div class="text-4xl mb-4">🏔️</div>
+    <p class="text-lg text-ink-700 mb-2">Every world needs places.</p>
+    <p class="text-parchment-300 mb-6">Create your first location.</p>
+    <a href="/worlds/{{world.id}}/locations/new" class="bg-ember-500 text-white px-5 py-2.5 rounded-lg hover:bg-ember-600 transition-colors">Create Location</a>
   </div>
 {{/if}}
