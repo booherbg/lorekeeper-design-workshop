@@ -1,0 +1,26 @@
+{{> breadcrumbs}}
+
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">{{location.name}}</h1>
+  <div class="flex gap-2">
+    <a href="/worlds/{{world.id}}/locations/{{location.id}}/edit" class="px-3 py-1.5 rounded border hover:bg-gray-100 text-sm">Edit</a>
+    <form method="POST" action="/worlds/{{world.id}}/locations/{{location.id}}/delete" onsubmit="return confirm('Delete this location?')">
+      <button type="submit" class="px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50 text-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="prose max-w-none mb-8">
+  <p class="whitespace-pre-line text-gray-700">{{location.description}}</p>
+</div>
+
+<div class="space-y-6">
+  <div>
+    <h2 class="text-lg font-semibold mb-2">Stories set here</h2>
+    <p class="text-gray-500">No stories yet.</p>
+  </div>
+  <div>
+    <h2 class="text-lg font-semibold mb-2">Lore about this place</h2>
+    <p class="text-gray-500">No lore yet.</p>
+  </div>
+</div>

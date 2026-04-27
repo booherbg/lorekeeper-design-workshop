@@ -14,9 +14,20 @@ model World {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   characters  Character[]
+  locations   Location[]
 }
 
 model Character {
+  id          Int      @id @default(autoincrement())
+  worldId     Int
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  world       World    @relation(fields: [worldId], references: [id], onDelete: Cascade)
+}
+
+model Location {
   id          Int      @id @default(autoincrement())
   worldId     Int
   name        String
