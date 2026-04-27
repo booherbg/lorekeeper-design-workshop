@@ -66,10 +66,15 @@ export async function locationRoutes(app: FastifyInstance) {
       include: { story: { select: { id: true, title: true, createdAt: true } } },
       orderBy: { story: { createdAt: "desc" } },
     });
+    const lore = await prisma.loreArtifact.findMany({
+      where: { locationId: location.id, status: "kept" },
+      orderBy: { createdAt: "desc" },
+    });
     return reply.view("locations/detail.hbs", {
       world,
       location,
       stories: stories.map((sl) => sl.story),
+      lore,
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name, href: `/worlds/${world.id}` },

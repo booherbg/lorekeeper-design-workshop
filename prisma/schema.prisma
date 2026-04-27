@@ -8,14 +8,15 @@ datasource db {
 }
 
 model World {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  characters  Character[]
-  locations   Location[]
-  stories     Story[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  characters    Character[]
+  locations     Location[]
+  stories       Story[]
+  loreArtifacts LoreArtifact[]
 }
 
 model Character {
@@ -27,6 +28,7 @@ model Character {
   updatedAt       DateTime         @updatedAt
   world           World            @relation(fields: [worldId], references: [id], onDelete: Cascade)
   storyCharacters StoryCharacter[]
+  loreArtifacts   LoreArtifact[]
 }
 
 model Location {
@@ -38,6 +40,7 @@ model Location {
   updatedAt       DateTime         @updatedAt
   world           World            @relation(fields: [worldId], references: [id], onDelete: Cascade)
   storyLocations  StoryLocation[]
+  loreArtifacts   LoreArtifact[]
 }
 
 model Story {
@@ -50,6 +53,7 @@ model Story {
   world           World            @relation(fields: [worldId], references: [id], onDelete: Cascade)
   storyCharacters StoryCharacter[]
   storyLocations  StoryLocation[]
+  loreArtifacts   LoreArtifact[]
 }
 
 model StoryCharacter {
@@ -68,4 +72,19 @@ model StoryLocation {
   location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
 
   @@id([storyId, locationId])
+}
+
+model LoreArtifact {
+  id          Int       @id @default(autoincrement())
+  worldId     Int
+  storyId     Int
+  characterId Int?
+  locationId  Int?
+  content     String
+  status      String    @default("pending")
+  createdAt   DateTime  @default(now())
+  world       World     @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  story       Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  character   Character? @relation(fields: [characterId], references: [id], onDelete: SetNull)
+  location    Location?  @relation(fields: [locationId], references: [id], onDelete: SetNull)
 }

@@ -66,10 +66,15 @@ export async function characterRoutes(app: FastifyInstance) {
       include: { story: { select: { id: true, title: true, createdAt: true } } },
       orderBy: { story: { createdAt: "desc" } },
     });
+    const lore = await prisma.loreArtifact.findMany({
+      where: { characterId: character.id, status: "kept" },
+      orderBy: { createdAt: "desc" },
+    });
     return reply.view("characters/detail.hbs", {
       world,
       character,
       stories: stories.map((sc) => sc.story),
+      lore,
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name, href: `/worlds/${world.id}` },

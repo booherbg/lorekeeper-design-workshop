@@ -32,6 +32,14 @@
   </div>
   <div>
     <h2 class="text-lg font-semibold mb-2">Lore about this character</h2>
-    <p class="text-gray-500">No lore yet.</p>
+    {{#if lore.length}}
+      <ul class="space-y-2">
+        {{#each lore}}
+          <li class="bg-gray-50 rounded p-3 text-gray-700">{{this.content}}</li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p class="text-gray-500">No lore yet.</p>
+    {{/if}}
   </div>
 </div>

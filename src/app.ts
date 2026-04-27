@@ -7,6 +7,7 @@ import { worldRoutes } from "./routes/worlds";
 import { characterRoutes } from "./routes/characters";
 import { locationRoutes } from "./routes/locations";
 import { storyRoutes } from "./routes/stories";
+import { loreRoutes } from "./routes/lore";
 
 export async function buildApp() {
   const app = Fastify();
@@ -37,6 +38,8 @@ export async function buildApp() {
     });
   });
 
+  Handlebars.registerHelper("eq", (a: unknown, b: unknown) => a === b);
+
   app.get("/", async (_request, reply) => {
     return reply.redirect("/worlds");
   });
@@ -45,6 +48,7 @@ export async function buildApp() {
   await app.register(characterRoutes);
   await app.register(locationRoutes);
   await app.register(storyRoutes);
+  await app.register(loreRoutes);
 
   return app;
 }

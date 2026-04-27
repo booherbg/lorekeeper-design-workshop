@@ -5,6 +5,7 @@ import {
   getStoryById,
   deleteStory,
 } from "../services/story-service";
+import { prisma } from "../db";
 
 export async function storyRoutes(app: FastifyInstance) {
   app.addHook("preHandler", async (request, reply) => {
@@ -37,11 +38,20 @@ export async function storyRoutes(app: FastifyInstance) {
     if (!story) {
       return reply.status(404).send("Story not found");
     }
+    const loreArtifacts = await prisma.loreArtifact.findMany({
+      where: { storyId: story.id },
+      include: {
+        character: { select: { id: true, name: true } },
+        location: { select: { id: true, name: true } },
+      },
+      orderBy: { createdAt: "asc" },
+    });
     return reply.view("stories/detail.hbs", {
       world,
       story,
       characters: story.storyCharacters.map((sc) => sc.character),
       locations: story.storyLocations.map((sl) => sl.location),
+      loreArtifacts,
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name, href: `/worlds/${world.id}` },

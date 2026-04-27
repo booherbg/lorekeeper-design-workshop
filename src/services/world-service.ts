@@ -51,12 +51,15 @@ export async function getWorldWithCounts(id: number) {
     },
   });
   if (!world) return null;
+  const keptLoreCount = await prisma.loreArtifact.count({
+    where: { worldId: id, status: "kept" },
+  });
   return {
     ...world,
     characterCount: world._count.characters,
     locationCount: world._count.locations,
     storyCount: world._count.stories,
-    loreCount: 0,
+    loreCount: keptLoreCount,
   };
 }
 
