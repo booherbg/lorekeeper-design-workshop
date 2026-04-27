@@ -1,0 +1,41 @@
+{
+  "name": "lorekeeper-design-workshop",
+  "version": "1.0.0",
+  "description": "The best bedtime stories are as interesting as they are consistent. The dragon remembers her promise from last Tuesday. The lighthouse keeper always smells like cinnamon and salt. The world feels real because it's *consistent* — the same characters, the same places, the same little details, story after story.",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "DATABASE_URL=file:./test.db vitest run",
+    "test:watch": "DATABASE_URL=file:./test.db vitest",
+    "db:reset": "prisma migrate reset --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/booherbg/lorekeeper-design-workshop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/booherbg/lorekeeper-design-workshop/issues"
+  },
+  "homepage": "https://github.com/booherbg/lorekeeper-design-workshop#readme",
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/static": "^9.1.3",
+    "@fastify/view": "^11.1.1",
+    "@prisma/client": "^6.19.3",
+    "@types/node": "^25.6.0",
+    "fastify": "^5.8.5",
+    "handlebars": "^4.7.9",
+    "prisma": "^6.19.3",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.5"
+  }
+}

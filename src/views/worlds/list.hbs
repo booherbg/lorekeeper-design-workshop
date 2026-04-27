@@ -1,0 +1,22 @@
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold">Worlds</h1>
+  <a href="/worlds/new" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700">Create World</a>
+</div>
+
+{{#if worlds.length}}
+  <div class="grid gap-4">
+    {{#each worlds}}
+      <a href="/worlds/{{this.id}}" class="block bg-white rounded-lg shadow p-5 hover:shadow-md transition-shadow">
+        <h2 class="text-lg font-semibold">{{this.name}}</h2>
+        {{#if this.description}}
+          <p class="text-gray-600 mt-1">{{truncate this.description 150}}</p>
+        {{/if}}
+      </a>
+    {{/each}}
+  </div>
+{{else}}
+  <div class="text-center py-12 text-gray-500">
+    <p class="text-lg mb-4">Create your first world to get started.</p>
+    <a href="/worlds/new" class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700">Create World</a>
+  </div>
+{{/if}}
