@@ -3,6 +3,7 @@ import {
   createWorld,
   listWorlds,
   getWorldById,
+  getWorldWithCounts,
   updateWorld,
   deleteWorld,
 } from "../services/world-service";
@@ -34,7 +35,7 @@ export async function worldRoutes(app: FastifyInstance) {
 
   app.get("/worlds/:id", async (request, reply) => {
     const { id } = request.params as { id: string };
-    const world = await getWorldById(Number(id));
+    const world = await getWorldWithCounts(Number(id));
     if (!world) {
       return reply.status(404).send("World not found");
     }

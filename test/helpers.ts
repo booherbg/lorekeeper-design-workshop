@@ -1,6 +1,7 @@
 import { prisma } from "../src/db";
 import { buildApp } from "../src/app";
 import { createWorld } from "../src/services/world-service";
+import { createCharacter } from "../src/services/character-service";
 
 export async function cleanDb() {
   await prisma.world.deleteMany();
@@ -16,4 +17,12 @@ export async function createTestWorld(overrides: Record<string, unknown> = {}) {
     description: "A test world",
     ...overrides,
   } as { name: string; description?: string });
+}
+
+export async function createTestCharacter(worldId: number, overrides: Record<string, unknown> = {}) {
+  return createCharacter(worldId, {
+    name: "Test Character",
+    description: "A test character",
+    ...overrides,
+  } as { name: string; description: string });
 }

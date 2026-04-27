@@ -16,19 +16,19 @@
 
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
   <a href="/worlds/{{world.id}}/characters" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">0</div>
+    <div class="text-2xl font-bold">{{world.characterCount}}</div>
     <div class="text-gray-500 text-sm">Characters</div>
   </a>
   <a href="/worlds/{{world.id}}/locations" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">0</div>
+    <div class="text-2xl font-bold">{{world.locationCount}}</div>
     <div class="text-gray-500 text-sm">Locations</div>
   </a>
   <a href="/worlds/{{world.id}}/stories" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">0</div>
+    <div class="text-2xl font-bold">{{world.storyCount}}</div>
     <div class="text-gray-500 text-sm">Stories</div>
   </a>
   <a href="/worlds/{{world.id}}/lore" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
-    <div class="text-2xl font-bold">0</div>
+    <div class="text-2xl font-bold">{{world.loreCount}}</div>
     <div class="text-gray-500 text-sm">Lore</div>
   </a>
 </div>

@@ -4,6 +4,7 @@ import formbody from "@fastify/formbody";
 import Handlebars from "handlebars";
 import path from "node:path";
 import { worldRoutes } from "./routes/worlds";
+import { characterRoutes } from "./routes/characters";
 
 export async function buildApp() {
   const app = Fastify();
@@ -31,6 +32,7 @@ export async function buildApp() {
   });
 
   await app.register(worldRoutes);
+  await app.register(characterRoutes);
 
   return app;
 }

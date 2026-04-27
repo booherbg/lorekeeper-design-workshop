@@ -41,6 +41,25 @@ export async function getWorldById(id: number) {
   return prisma.world.findUnique({ where: { id } });
 }
 
+export async function getWorldWithCounts(id: number) {
+  const world = await prisma.world.findUnique({
+    where: { id },
+    include: {
+      _count: {
+        select: { characters: true },
+      },
+    },
+  });
+  if (!world) return null;
+  return {
+    ...world,
+    characterCount: world._count.characters,
+    locationCount: 0,
+    storyCount: 0,
+    loreCount: 0,
+  };
+}
+
 export async function updateWorld(id: number, data: UpdateWorldInput) {
   const existing = await prisma.world.findUnique({ where: { id } });
   if (!existing) {
