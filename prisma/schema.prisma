@@ -15,24 +15,57 @@ model World {
   updatedAt   DateTime    @updatedAt
   characters  Character[]
   locations   Location[]
+  stories     Story[]
 }
 
 model Character {
-  id          Int      @id @default(autoincrement())
-  worldId     Int
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  world       World    @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  id              Int              @id @default(autoincrement())
+  worldId         Int
+  name            String
+  description     String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  world           World            @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  storyCharacters StoryCharacter[]
 }
 
 model Location {
-  id          Int      @id @default(autoincrement())
-  worldId     Int
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  world       World    @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  id              Int              @id @default(autoincrement())
+  worldId         Int
+  name            String
+  description     String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  world           World            @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  storyLocations  StoryLocation[]
+}
+
+model Story {
+  id              Int              @id @default(autoincrement())
+  worldId         Int
+  title           String
+  content         String
+  prompt          String
+  createdAt       DateTime         @default(now())
+  world           World            @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  storyCharacters StoryCharacter[]
+  storyLocations  StoryLocation[]
+}
+
+model StoryCharacter {
+  storyId     Int
+  characterId Int
+  story       Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, characterId])
+}
+
+model StoryLocation {
+  storyId    Int
+  locationId Int
+  story      Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, locationId])
 }

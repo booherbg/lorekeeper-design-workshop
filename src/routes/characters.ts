@@ -7,6 +7,7 @@ import {
   updateCharacter,
   deleteCharacter,
 } from "../services/character-service";
+import { prisma } from "../db";
 
 export async function characterRoutes(app: FastifyInstance) {
   app.addHook("preHandler", async (request, reply) => {
@@ -60,9 +61,15 @@ export async function characterRoutes(app: FastifyInstance) {
     if (!character) {
       return reply.status(404).send("Character not found");
     }
+    const stories = await prisma.storyCharacter.findMany({
+      where: { characterId: character.id },
+      include: { story: { select: { id: true, title: true, createdAt: true } } },
+      orderBy: { story: { createdAt: "desc" } },
+    });
     return reply.view("characters/detail.hbs", {
       world,
       character,
+      stories: stories.map((sc) => sc.story),
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name, href: `/worlds/${world.id}` },

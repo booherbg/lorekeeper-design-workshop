@@ -17,7 +17,18 @@
 <div class="space-y-6">
   <div>
     <h2 class="text-lg font-semibold mb-2">Stories featuring this character</h2>
-    <p class="text-gray-500">No stories yet.</p>
+    {{#if stories.length}}
+      <ul class="space-y-1">
+        {{#each stories}}
+          <li>
+            <a href="/worlds/{{../../world.id}}/stories/{{this.id}}" class="text-blue-600 hover:underline">{{this.title}}</a>
+            <span class="text-sm text-gray-400 ml-2">{{formatDate this.createdAt}}</span>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p class="text-gray-500">No stories yet.</p>
+    {{/if}}
   </div>
   <div>
     <h2 class="text-lg font-semibold mb-2">Lore about this character</h2>

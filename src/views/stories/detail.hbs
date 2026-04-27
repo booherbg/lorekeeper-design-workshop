@@ -1,0 +1,40 @@
+{{> breadcrumbs}}
+
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">{{story.title}}</h1>
+  <form method="POST" action="/worlds/{{world.id}}/stories/{{story.id}}/delete" onsubmit="return confirm('Delete this story? This also removes lore artifacts from this story.')">
+    <button type="submit" class="px-3 py-1.5 rounded border border-red-300 text-red-600 hover:bg-red-50 text-sm">Delete</button>
+  </form>
+</div>
+
+<p class="text-sm text-gray-400 mb-4">{{formatDate story.createdAt}}</p>
+
+<div class="bg-gray-100 rounded-lg p-4 mb-6">
+  <p class="text-sm text-gray-500"><span class="font-medium">Prompt:</span> {{story.prompt}}</p>
+</div>
+
+<div class="prose max-w-none mb-8">
+  <p class="whitespace-pre-line text-gray-700 leading-relaxed">{{story.content}}</p>
+</div>
+
+{{#if characters.length}}
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-2">Characters in this story</h2>
+    <div class="flex flex-wrap gap-2">
+      {{#each characters}}
+        <a href="/worlds/{{../../world.id}}/characters/{{this.id}}" class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full hover:bg-gray-200 text-sm">{{this.name}}</a>
+      {{/each}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if locations.length}}
+  <div class="mb-6">
+    <h2 class="text-lg font-semibold mb-2">Locations in this story</h2>
+    <div class="flex flex-wrap gap-2">
+      {{#each locations}}
+        <a href="/worlds/{{../../world.id}}/locations/{{this.id}}" class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full hover:bg-gray-200 text-sm">{{this.name}}</a>
+      {{/each}}
+    </div>
+  </div>
+{{/if}}

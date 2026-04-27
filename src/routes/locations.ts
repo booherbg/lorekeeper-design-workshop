@@ -7,6 +7,7 @@ import {
   updateLocation,
   deleteLocation,
 } from "../services/location-service";
+import { prisma } from "../db";
 
 export async function locationRoutes(app: FastifyInstance) {
   app.addHook("preHandler", async (request, reply) => {
@@ -60,9 +61,15 @@ export async function locationRoutes(app: FastifyInstance) {
     if (!location) {
       return reply.status(404).send("Location not found");
     }
+    const stories = await prisma.storyLocation.findMany({
+      where: { locationId: location.id },
+      include: { story: { select: { id: true, title: true, createdAt: true } } },
+      orderBy: { story: { createdAt: "desc" } },
+    });
     return reply.view("locations/detail.hbs", {
       world,
       location,
+      stories: stories.map((sl) => sl.story),
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name, href: `/worlds/${world.id}` },

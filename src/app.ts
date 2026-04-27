@@ -6,6 +6,7 @@ import path from "node:path";
 import { worldRoutes } from "./routes/worlds";
 import { characterRoutes } from "./routes/characters";
 import { locationRoutes } from "./routes/locations";
+import { storyRoutes } from "./routes/stories";
 
 export async function buildApp() {
   const app = Fastify();
@@ -28,6 +29,14 @@ export async function buildApp() {
     return str.slice(0, len) + "...";
   });
 
+  Handlebars.registerHelper("formatDate", (date: Date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  });
+
   app.get("/", async (_request, reply) => {
     return reply.redirect("/worlds");
   });
@@ -35,6 +44,7 @@ export async function buildApp() {
   await app.register(worldRoutes);
   await app.register(characterRoutes);
   await app.register(locationRoutes);
+  await app.register(storyRoutes);
 
   return app;
 }

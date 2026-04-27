@@ -46,7 +46,7 @@ export async function getWorldWithCounts(id: number) {
     where: { id },
     include: {
       _count: {
-        select: { characters: true, locations: true },
+        select: { characters: true, locations: true, stories: true },
       },
     },
   });
@@ -55,7 +55,7 @@ export async function getWorldWithCounts(id: number) {
     ...world,
     characterCount: world._count.characters,
     locationCount: world._count.locations,
-    storyCount: 0,
+    storyCount: world._count.stories,
     loreCount: 0,
   };
 }
