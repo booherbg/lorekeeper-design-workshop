@@ -110,5 +110,5 @@ LoreArtifact ∞──1 Location (optional)
 
 - **Location-aware consistency:** Story generation and world-building advice always pull in relevant locations and world background, even when the user hasn't explicitly selected them. Locations anchor the world.
 - **Two sources of flavor:** Authored descriptions (on characters and locations) and emergent lore (artifacts). Both feed into story generation context.
-- **Soft delete for artifacts:** Discarded artifacts retain their record. Status changes, rows don't disappear.
-- **Cascade deletes on ownership:** Deleting a world removes everything in it. Deleting a character/location nullifies optional references on lore artifacts but doesn't destroy them.
+- **Soft delete for artifact status:** Discarding an artifact changes its status — the row stays. This is not the same as cascade behavior: deleting a *story* hard-deletes its lore artifacts (cascade), and deleting a *world* hard-deletes everything in it (cascade). "Soft delete" only applies to the keep/discard lifecycle.
+- **Cascade deletes on ownership:** Deleting a world removes everything in it. Deleting a story removes its lore artifacts. Deleting a character/location nullifies optional references on lore artifacts but doesn't destroy them.

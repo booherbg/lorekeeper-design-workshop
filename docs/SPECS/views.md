@@ -185,6 +185,22 @@ Browse all lore artifacts in the world.
 - Click source story → story detail
 - Click character/location → their detail page
 
+### The Lorekeeper's Inscription — `/lorekeeper`
+
+A hidden page — not linked from anywhere in the navigation. Only found by those who think to look.
+
+**Styled differently** from the rest of the app: darker palette, serif font for body text, centered narrow column. Feels like opening an old book.
+
+**Shows:**
+
+- A thematic header: "The Lorekeeper's Inscription"
+- An atmospheric opening paragraph establishing the Lorekeeper as an ancient, enigmatic figure who watches over worlds and remembers their tales
+- **Worlds Under Watch** — each world rendered as a narrative entry: "The realm of [name], first inscribed on [createdAt formatted as prose — 'the twenty-seventh of April'], home to [N] souls, [N] sacred places, and [N] tales woven from its threads." If a world has zero stories: "...awaiting its first tale."
+- If no worlds exist: "The Lorekeeper watches. The pages are empty. No worlds have yet been dreamed into being."
+- At the very bottom, in small, muted text: "This Lorekeeper was forged by a craftsman and a whispering voice, through [N] sessions of careful work." — where N is the count of Markdown files in `docs/PROMPTS/SESSION-SUMMARIES/`. If the directory is empty or missing, omit this line.
+
+**Data needed:** All worlds with counts (characters, locations, stories). Count of session summary files from the filesystem.
+
 ### MCP Setup — `/setup`
 
 A standalone page (not world-scoped) with instructions for connecting Claude Code to the MCP server.

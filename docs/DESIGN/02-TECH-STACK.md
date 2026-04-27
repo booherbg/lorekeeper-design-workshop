@@ -66,12 +66,11 @@ This document describes the recommended technology stack for Lorekeeper. These a
 ```
 Server-rendered monolith
 ├── Fastify server
-│   ├── Routes (HTTP endpoints)
-│   ├── Services (business logic)
-│   ├── Repositories (data access via Prisma)
+│   ├── Routes (web endpoints, HTML responses)
+│   ├── Services (business logic + validation, call Prisma directly)
 │   └── Views (Handlebars templates + Tailwind)
 ├── MCP Server (stdio transport)
-│   └── Tools (world-building advisor, consistency checker)
+│   └── Tools (call same service layer — no HTTP)
 └── Prisma + SQLite
     └── dev.db / test.db
 ```

@@ -1,8 +1,17 @@
 # API Endpoints Spec
 
+## Architecture
+
+There are no JSON API routes. The app has two programmatic interfaces:
+
+1. **Web routes** — server-rendered HTML for humans (Handlebars templates)
+2. **MCP tools** — for Claude Code, calling the service layer directly (no HTTP)
+
+Both web routes and MCP tools call the same service layer. Business logic and validation live in the service layer, not in route handlers or MCP tool definitions.
+
 ## Web Routes (Server-Rendered)
 
-All web routes return HTML via Handlebars templates. Forms use standard POST with redirects (no client-side JS required for core flows).
+All web routes return HTML via Handlebars templates. Forms use POST for all mutations (create, update, delete) with redirects. No method override — POST is the only mutation verb in the web layer.
 
 ### Worlds
 
@@ -14,8 +23,8 @@ All web routes return HTML via Handlebars templates. Forms use standard POST wit
 | POST | `/worlds` | Create world, redirect to detail |
 | GET | `/worlds/:id` | World detail — overview with counts of characters, locations, stories |
 | GET | `/worlds/:id/edit` | Edit world form |
-| PUT | `/worlds/:id` | Update world, redirect to detail |
-| DELETE | `/worlds/:id` | Delete world, redirect to list |
+| POST | `/worlds/:id/update` | Update world, redirect to detail |
+| POST | `/worlds/:id/delete` | Delete world, redirect to list |
 
 ### Characters
 
@@ -26,8 +35,8 @@ All web routes return HTML via Handlebars templates. Forms use standard POST wit
 | POST | `/worlds/:worldId/characters` | Create character, redirect to detail |
 | GET | `/worlds/:worldId/characters/:id` | Character detail — description, stories featuring them, lore about them |
 | GET | `/worlds/:worldId/characters/:id/edit` | Edit character form |
-| PUT | `/worlds/:worldId/characters/:id` | Update character, redirect to detail |
-| DELETE | `/worlds/:worldId/characters/:id` | Delete character, redirect to list |
+| POST | `/worlds/:worldId/characters/:id/update` | Update character, redirect to detail |
+| POST | `/worlds/:worldId/characters/:id/delete` | Delete character, redirect to list |
 
 ### Locations
 
@@ -38,8 +47,8 @@ All web routes return HTML via Handlebars templates. Forms use standard POST wit
 | POST | `/worlds/:worldId/locations` | Create location, redirect to detail |
 | GET | `/worlds/:worldId/locations/:id` | Location detail — description, stories set here, lore about this place |
 | GET | `/worlds/:worldId/locations/:id/edit` | Edit location form |
-| PUT | `/worlds/:worldId/locations/:id` | Update location, redirect to detail |
-| DELETE | `/worlds/:worldId/locations/:id` | Delete location, redirect to list |
+| POST | `/worlds/:worldId/locations/:id/update` | Update location, redirect to detail |
+| POST | `/worlds/:worldId/locations/:id/delete` | Delete location, redirect to list |
 
 ### Stories
 
@@ -49,115 +58,36 @@ Stories are immutable once created. No edit route.
 |--------|------|-------------|
 | GET | `/worlds/:worldId/stories` | List stories in world |
 | GET | `/worlds/:worldId/stories/:id` | Story detail — full text, characters, locations, lore artifacts generated |
-| DELETE | `/worlds/:worldId/stories/:id` | Delete story, redirect to list |
+| POST | `/worlds/:worldId/stories/:id/delete` | Delete story, redirect to list |
 
 ### Lore Artifacts
 
-Lore artifacts are viewed in context (story detail, character detail, location detail). The only standalone action is status update.
+Lore artifacts are viewed in context (story detail, character detail, location detail). The standalone list page supports filtering. Status updates use inline JS fetch for a snappy UX.
 
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/worlds/:worldId/lore` | List all lore artifacts in world, filterable by status |
-| PUT | `/worlds/:worldId/lore/:id` | Update artifact status (pending → kept or discarded) |
+| POST | `/worlds/:worldId/lore/:id/status` | Update artifact status — returns JSON, not a redirect |
 
-## API Routes (JSON)
+**Lore status update** is the one route that returns JSON instead of HTML. It's called via `fetch()` from inline JS — no page reload. Request and response shapes:
 
-JSON endpoints for MCP tools to call. Same data, different format.
-
-### Worlds
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/worlds` | List all worlds |
-| POST | `/api/worlds` | Create world |
-| GET | `/api/worlds/:id` | Get world with summary stats |
-| PUT | `/api/worlds/:id` | Update world |
-| DELETE | `/api/worlds/:id` | Delete world |
-
-### Characters
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/worlds/:worldId/characters` | List characters in world |
-| POST | `/api/worlds/:worldId/characters` | Create character |
-| GET | `/api/worlds/:worldId/characters/:id` | Get character with full description |
-| PUT | `/api/worlds/:worldId/characters/:id` | Update character |
-| DELETE | `/api/worlds/:worldId/characters/:id` | Delete character |
-
-### Locations
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/worlds/:worldId/locations` | List locations in world |
-| POST | `/api/worlds/:worldId/locations` | Create location |
-| GET | `/api/worlds/:worldId/locations/:id` | Get location with full description |
-| PUT | `/api/worlds/:worldId/locations/:id` | Update location |
-| DELETE | `/api/worlds/:worldId/locations/:id` | Delete location |
-
-### Stories
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/worlds/:worldId/stories` | List stories in world |
-| POST | `/api/worlds/:worldId/stories` | Save a generated story |
-| GET | `/api/worlds/:worldId/stories/:id` | Get story with characters, locations, lore |
-| DELETE | `/api/worlds/:worldId/stories/:id` | Delete story |
-
-**POST /api/worlds/:worldId/stories request shape:**
-
-```json
-{
-  "title": "The Blacksmith's Bargain",
-  "content": "Long-form story text...",
-  "prompt": "Tell me a bedtime story about the blacksmith meeting a stranger",
-  "characterIds": [1, 3],
-  "locationIds": [2]
-}
+```
+Request:  POST /worlds/:worldId/lore/:id/status
+Headers:  Content-Type: application/json
+Body:     { "status": "kept" }       // or "discarded" or "pending"
+Response: 200
+Body:     { "id": 3, "status": "kept" }
 ```
 
-The AI generates the story content externally, then saves it through this endpoint with the full text and linked entity IDs.
+Returns 400 if status is not one of `pending`, `kept`, `discarded`. Returns 404 if artifact doesn't exist or doesn't belong to this world.
 
-### Lore Artifacts
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/worlds/:worldId/lore` | List lore artifacts, filterable by status |
-| POST | `/api/worlds/:worldId/lore` | Create lore artifact (used after story generation) |
-| PUT | `/api/worlds/:worldId/lore/:id` | Update artifact status |
-
-**POST /api/worlds/:worldId/lore request shape:**
-
-```json
-{
-  "storyId": 7,
-  "content": "The blacksmith always taps his hammer three times before starting work",
-  "characterId": 1,
-  "locationId": null,
-  "status": "pending"
-}
-```
-
-### World Context
-
-A read-only endpoint that assembles the full context for a world — everything the AI needs for generation.
+### The Lorekeeper's Inscription
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/worlds/:worldId/context` | Full world context for AI consumption |
+| GET | `/lorekeeper` | The Lorekeeper's inscription — not linked from navigation, discoverable only by the curious |
 
-**Response shape:**
-
-```json
-{
-  "world": { "id": 1, "name": "...", "description": "..." },
-  "characters": [{ "id": 1, "name": "...", "description": "..." }, ...],
-  "locations": [{ "id": 1, "name": "...", "description": "..." }, ...],
-  "lore": [{ "id": 1, "content": "...", "characterId": 1, "locationId": null }, ...],
-  "recentStories": [{ "id": 7, "title": "...", "summary": "..." }, ...]
-}
-```
-
-The `lore` array only includes artifacts with status `kept`. The `recentStories` array provides recent narrative history for continuity.
+This page is not world-scoped. It exists outside the normal navigation hierarchy.
 
 ## MCP Tools
 
@@ -200,8 +130,10 @@ These are the tools exposed via the MCP server (stdio transport). Claude Code co
 
 | Tool | Description |
 |------|-------------|
-| `check_consistency` | Read world context and flag potential inconsistencies — contradictory descriptions, orphaned references, thin characters/locations that need fleshing out. |
-| `suggest_connections` | Analyze characters and locations for potential relationships or shared history the user hasn't explicitly defined. |
+| `check_consistency` | Return world context structured for consistency review. The LLM in the skill file analyzes the data — our code just assembles and returns it. |
+| `suggest_connections` | Return characters and locations with their descriptions and existing relationships. The LLM identifies potential connections — our code provides the data. |
+
+Advisory tools are **data retrieval**, not analysis. They return structured data; the AI (via the skill file) does the reasoning. This keeps our code simple and deterministic.
 
 ## Validation Rules
 
@@ -212,8 +144,67 @@ These are the tools exposed via the MCP server (stdio transport). Claude Code co
 - **lore status**: must be one of `pending`, `kept`, `discarded`
 - **Status transitions**: any direction is valid (user can re-keep a discarded artifact)
 
+## Service Layer Contract
+
+MCP tools and web routes both call the same service functions. The service layer owns validation and business logic. Shapes documented here for clarity — these are what the service functions accept and return.
+
+### Story creation shape
+
+```typescript
+createStory(worldId, {
+  title: "The Blacksmith's Bargain",
+  content: "Long-form story text...",
+  prompt: "Tell me a bedtime story about the blacksmith meeting a stranger",
+  characterIds: [1, 3],
+  locationIds: [2],
+})
+```
+
+The AI generates the story content externally, then saves it through the MCP `save_story` tool.
+
+### Lore artifact creation shapes
+
+Single:
+
+```typescript
+createLoreArtifact(worldId, {
+  storyId: 7,
+  content: "The blacksmith always taps his hammer three times before starting work",
+  characterId: 1,
+  locationId: null,
+  status: "pending",
+})
+```
+
+Batch (used by MCP `save_lore_artifacts` tool after story generation):
+
+```typescript
+createLoreArtifacts(worldId, [
+  { storyId: 7, content: "The blacksmith always taps...", characterId: 1, locationId: null },
+  { storyId: 7, content: "The forge smells of copper...", characterId: null, locationId: 2 },
+])
+// All created with status "pending". storyId and worldId are the same for the entire batch.
+```
+
+### World context shape
+
+```typescript
+getWorldContext(worldId)
+// => {
+//   world: { id: 1, name: "...", description: "..." },
+//   characters: [{ id: 1, name: "...", description: "..." }, ...],
+//   locations: [{ id: 1, name: "...", description: "..." }, ...],
+//   lore: [{ id: 1, content: "...", characterId: 1, locationId: null }, ...],
+//   recentStories: [{ id: 7, title: "...", contentPreview: "First 200 chars..." }, ...],
+// }
+```
+
+- The `lore` array only includes artifacts with status `kept`.
+- The `recentStories` array returns the **5 most recent** stories ordered by `createdAt` desc. The `contentPreview` field is the first 200 characters of `content` — there is no summary field on the Story model.
+
 ## Design Principles
 
+- **No JSON API routes.** MCP tools call service functions directly. Web routes render HTML. No redundant HTTP/JSON layer.
 - **Location-aware consistency**: `get_world_context` always includes all locations, regardless of what the user selected. The AI should ground every story in the world's geography.
 - **Two sources of flavor**: World context assembles both authored descriptions and kept lore artifacts. Both feed into generation prompts.
-- **MCP is the primary interface**: The web UI is for browsing and manual edits. The MCP tools are how the AI builds and enriches the world.
+- **Service layer is the contract**: Both MCP tools and web routes depend on the same service functions. Test the service layer to verify correctness for both interfaces.
