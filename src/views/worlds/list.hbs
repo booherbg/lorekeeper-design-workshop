@@ -11,6 +11,11 @@
         {{#if this.description}}
           <p class="text-gray-600 mt-1">{{truncate this.description 150}}</p>
         {{/if}}
+        <div class="flex gap-4 mt-2 text-sm text-gray-400">
+          <span>{{this.characterCount}} character{{#unless (eq this.characterCount 1)}}s{{/unless}}</span>
+          <span>{{this.locationCount}} location{{#unless (eq this.locationCount 1)}}s{{/unless}}</span>
+          <span>{{this.storyCount}} stor{{#if (eq this.storyCount 1)}}y{{else}}ies{{/if}}</span>
+        </div>
       </a>
     {{/each}}
   </div>

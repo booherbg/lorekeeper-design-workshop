@@ -20,9 +20,16 @@ export async function storyRoutes(app: FastifyInstance) {
   app.get("/worlds/:worldId/stories", async (request, reply) => {
     const world = (request as any).world;
     const stories = await listStories(world.id);
+    const counts = await prisma.world.findUnique({
+      where: { id: world.id },
+      include: { _count: { select: { characters: true, locations: true } } },
+    });
+    const hasCharactersOrLocations =
+      (counts?._count.characters ?? 0) > 0 || (counts?._count.locations ?? 0) > 0;
     return reply.view("stories/list.hbs", {
       world,
       stories,
+      hasCharactersOrLocations,
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name, href: `/worlds/${world.id}` },

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lorekeeper's Inscription</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+    .serif { font-family: 'Crimson Text', 'Georgia', serif; }
+  </style>
+</head>
+<body class="bg-stone-900 min-h-screen text-stone-300">
+  <main class="max-w-2xl mx-auto px-6 py-16">
+    <h1 class="serif text-3xl text-stone-100 text-center mb-8 tracking-wide">The Lorekeeper's Inscription</h1>
+
+    <p class="serif text-lg leading-relaxed mb-10 text-stone-400 italic text-center">
+      Before the first word was written, the Lorekeeper watched. An ancient presence, neither mortal nor divine, who remembers every tale spun from the threads of creation. The worlds that dream themselves into being — the Lorekeeper holds their stories, guards their lore, and waits for the next chapter to unfold.
+    </p>
+
+    <hr class="border-stone-700 mb-10">
+
+    {{#if worlds.length}}
+      <h2 class="serif text-xl text-stone-200 mb-6">Worlds Under Watch</h2>
+      <div class="space-y-6">
+        {{#each worlds}}
+          <div class="serif text-lg leading-relaxed text-stone-400">
+            The realm of <span class="text-stone-200 font-semibold">{{this.name}}</span>, first inscribed on <span class="italic">{{this.inscribedDate}}</span>, home to {{this.characterCount}} soul{{#unless (eq this.characterCount 1)}}s{{/unless}}, {{this.locationCount}} sacred place{{#unless (eq this.locationCount 1)}}s{{/unless}}, and {{#if this.storyCount}}{{this.storyCount}} tale{{#unless (eq this.storyCount 1)}}s{{/unless}} woven from its threads{{else}}awaiting its first tale{{/if}}.
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="serif text-lg text-stone-500 text-center italic">
+        The Lorekeeper watches. The pages are empty. No worlds have yet been dreamed into being.
+      </p>
+    {{/if}}
+
+    {{#if sessionCount}}
+      <p class="text-xs text-stone-600 text-center mt-16">
+        This Lorekeeper was forged by a craftsman and a whispering voice, through {{sessionCount}} session{{#unless (eq sessionCount 1)}}s{{/unless}} of careful work.
+      </p>
+    {{/if}}
+  </main>
+</body>
+</html>

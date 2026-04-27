@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import {
   createWorld,
-  listWorlds,
+  listWorldsWithCounts,
   getWorldById,
   getWorldWithCounts,
   updateWorld,
@@ -10,7 +10,7 @@ import {
 
 export async function worldRoutes(app: FastifyInstance) {
   app.get("/worlds", async (_request, reply) => {
-    const worlds = await listWorlds();
+    const worlds = await listWorldsWithCounts();
     return reply.view("worlds/list.hbs", { worlds });
   });
 
@@ -39,8 +39,11 @@ export async function worldRoutes(app: FastifyInstance) {
     if (!world) {
       return reply.status(404).send("World not found");
     }
+    const showStoryCallout =
+      (world.characterCount > 0 || world.locationCount > 0) && world.storyCount === 0;
     return reply.view("worlds/detail.hbs", {
       world,
+      showStoryCallout,
       crumbs: [
         { label: "Worlds", href: "/worlds" },
         { label: world.name },

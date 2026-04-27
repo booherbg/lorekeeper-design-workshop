@@ -14,6 +14,14 @@
   <p class="text-gray-600 mb-6 whitespace-pre-line">{{world.description}}</p>
 {{/if}}
 
+{{#if showStoryCallout}}
+  <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mt-6">
+    <h2 class="text-lg font-semibold text-blue-900 mb-2">Ready for a story?</h2>
+    <p class="text-blue-800 text-sm mb-3">Your world has {{world.characterCount}} character{{#unless (eq world.characterCount 1)}}s{{/unless}} and {{world.locationCount}} location{{#unless (eq world.locationCount 1)}}s{{/unless}}. Ask your AI advisor to generate a story — it'll draw from everything you've built here.</p>
+    <a href="/setup" class="text-blue-600 text-sm underline">Set up MCP connection</a>
+  </div>
+{{/if}}
+
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
   <a href="/worlds/{{world.id}}/characters" class="bg-white rounded-lg shadow p-4 text-center hover:shadow-md transition-shadow">
     <div class="text-2xl font-bold">{{world.characterCount}}</div>

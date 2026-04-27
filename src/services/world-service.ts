@@ -37,6 +37,21 @@ export async function listWorlds() {
   });
 }
 
+export async function listWorldsWithCounts() {
+  const worlds = await prisma.world.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      _count: { select: { characters: true, locations: true, stories: true } },
+    },
+  });
+  return worlds.map((w) => ({
+    ...w,
+    characterCount: w._count.characters,
+    locationCount: w._count.locations,
+    storyCount: w._count.stories,
+  }));
+}
+
 export async function getWorldById(id: number) {
   return prisma.world.findUnique({ where: { id } });
 }

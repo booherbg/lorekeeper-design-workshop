@@ -8,6 +8,8 @@ import { characterRoutes } from "./routes/characters";
 import { locationRoutes } from "./routes/locations";
 import { storyRoutes } from "./routes/stories";
 import { loreRoutes } from "./routes/lore";
+import { prisma } from "./db";
+import fs from "node:fs";
 
 export async function buildApp() {
   const app = Fastify();
@@ -42,6 +44,44 @@ export async function buildApp() {
 
   app.get("/", async (_request, reply) => {
     return reply.redirect("/worlds");
+  });
+
+  app.get("/lorekeeper", async (_request, reply) => {
+    const worldsRaw = await prisma.world.findMany({
+      include: {
+        _count: { select: { characters: true, locations: true, stories: true } },
+      },
+      orderBy: { createdAt: "asc" },
+    });
+    const worlds = worldsRaw.map((w) => {
+      const d = new Date(w.createdAt);
+      const day = d.getDate();
+      const suffix =
+        day % 10 === 1 && day !== 11 ? "st" :
+        day % 10 === 2 && day !== 12 ? "nd" :
+        day % 10 === 3 && day !== 13 ? "rd" : "th";
+      const month = d.toLocaleDateString("en-US", { month: "long" });
+      const inscribedDate = `the ${day}${suffix} of ${month}`;
+      return {
+        name: w.name,
+        inscribedDate,
+        characterCount: w._count.characters,
+        locationCount: w._count.locations,
+        storyCount: w._count.stories,
+      };
+    });
+
+    let sessionCount = 0;
+    const summaryDir = path.join(__dirname, "../docs/PROMPTS/SESSION-SUMMARIES");
+    try {
+      const files = fs.readdirSync(summaryDir);
+      sessionCount = files.filter((f) => f.endsWith(".md")).length;
+    } catch {}
+
+    return (reply as any).view("lorekeeper.hbs", {
+      worlds,
+      sessionCount: sessionCount > 0 ? sessionCount : null,
+    }, { layout: false });
   });
 
   await app.register(worldRoutes);
