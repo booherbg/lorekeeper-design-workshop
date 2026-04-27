@@ -19,3 +19,10 @@ describe("GET /lorekeeper", () => {
     expect(res.statusCode).toBe(200);
   });
 });
+
+describe("GET /setup", () => {
+  it("returns 200", async () => {
+    const res = await app.inject({ method: "GET", url: "/setup" });
+    expect(res.statusCode).toBe(200);
+  });
+});

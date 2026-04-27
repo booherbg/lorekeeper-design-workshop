@@ -46,6 +46,14 @@ export async function buildApp() {
     return reply.redirect("/worlds");
   });
 
+  app.get("/setup", async (_request, reply) => {
+    const projectPath = path.resolve(__dirname, "..");
+    return reply.view("setup.hbs", {
+      projectPath,
+      crumbs: [{ label: "Setup" }],
+    });
+  });
+
   app.get("/lorekeeper", async (_request, reply) => {
     const worldsRaw = await prisma.world.findMany({
       include: {
