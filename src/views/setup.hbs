@@ -1,7 +1,12 @@
 {{> breadcrumbs}}
 
 <h1 class="text-2xl font-bold text-text-100 mb-2">Setup</h1>
-<p class="text-text-200 mb-6">Connect an AI assistant to Lorekeeper and start building worlds together.</p>
+<p class="text-text-200 mb-4">Connect an AI assistant to Lorekeeper and start building worlds together.</p>
+
+<div class="bg-surface-100 rounded-lg border border-ember-400/30 p-4 mb-6">
+  <p class="text-sm text-text-200"><span class="font-semibold text-text-100">Quick start:</span> Run the install script to set up everything automatically — MCP, skill file, and a start script:</p>
+  <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm mt-2"><code>curl -s http://localhost:3000/setup/install | bash</code></pre>
+</div>
 
 <!-- Tabs -->
 <div class="border-b border-surface-300 mb-6">
@@ -15,20 +20,43 @@
 <!-- Tab: Connect -->
 <div id="tab-connect" class="tab-content space-y-6">
   <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">
-    <p class="text-text-200">The Model Context Protocol (MCP) lets AI assistants interact with Lorekeeper directly — creating worlds, characters, stories, and lore through conversation. Choose the connection method that matches your setup.</p>
+    <p class="text-text-200">The Model Context Protocol (MCP) lets AI assistants interact with Lorekeeper directly — creating worlds, characters, stories, and lore through conversation. All methods connect via HTTP to the running server.</p>
+    <p class="text-sm text-text-300 mt-2">Requires <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">npm run dev</code> to be running.</p>
   </div>
 
   <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">
-    <div class="flex items-center gap-2 mb-1">
-      <span class="bg-ember-500 text-white text-xs font-bold px-2 py-0.5 rounded">Recommended</span>
-      <h2 class="text-lg font-semibold text-text-100">Connect via URL</h2>
-    </div>
-    <p class="text-sm text-text-300 mb-5">Point your MCP client at the running Lorekeeper server. Requires <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">npm run dev</code> to be running.</p>
-
+    <h2 class="text-lg font-semibold text-text-100 mb-4">Claude Code</h2>
     <div class="space-y-5">
       <div class="border-l-2 border-ember-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Claude Desktop</h3>
-        <p class="text-sm text-text-300 mb-2">Edit <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">claude_desktop_config.json</code>:</p>
+        <div class="flex items-center gap-2 mb-2">
+          <h3 class="font-medium text-text-100">Global (all projects)</h3>
+          <span class="bg-ember-500 text-white text-xs font-bold px-2 py-0.5 rounded">Recommended</span>
+        </div>
+        <p class="text-sm text-text-300 mb-2">Run this command in your terminal:</p>
+        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>claude mcp add --transport http lorekeeper --scope user http://localhost:3000/mcp</code></pre>
+        <p class="text-sm text-text-300 mt-2">Verify with <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">/mcp</code> inside Claude Code after restarting.</p>
+      </div>
+      <div class="border-l-2 border-surface-400 pl-4">
+        <h3 class="font-medium text-text-100 mb-2">Project-level</h3>
+        <p class="text-sm text-text-300 mb-2">Create <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.mcp.json</code> in the project root:</p>
+        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{
+  "mcpServers": {
+    "lorekeeper": {
+      "type": "http",
+      "url": "http://localhost:3000/mcp"
+    }
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">
+    <h2 class="text-lg font-semibold text-text-100 mb-4">Cursor</h2>
+    <div class="space-y-5">
+      <div class="border-l-2 border-ember-400 pl-4">
+        <h3 class="font-medium text-text-100 mb-2">Via MCP config file</h3>
+        <p class="text-sm text-text-300 mb-2">Create <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.cursor/mcp.json</code> in your working directory:</p>
         <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{
   "mcpServers": {
     "lorekeeper": {
@@ -37,66 +65,33 @@
   }
 }</code></pre>
       </div>
-      <div class="border-l-2 border-ember-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Claude Code</h3>
-        <p class="text-sm text-text-300 mb-2">Add to <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.claude/settings.json</code>:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{
+      <div class="border-l-2 border-surface-400 pl-4">
+        <h3 class="font-medium text-text-100 mb-2">Via Settings UI</h3>
+        <p class="text-sm text-text-300">Settings &rarr; MCP &rarr; Add Server &rarr; type <strong>URL</strong> &rarr; enter <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">http://localhost:3000/mcp</code></p>
+        <p class="text-sm text-text-300 mt-1">Name the server <strong>lorekeeper</strong>. This writes to <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.cursor/mcp.json</code> for you.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">
+    <h2 class="text-lg font-semibold text-text-100 mb-4">Claude Desktop</h2>
+    <div class="border-l-2 border-surface-400 pl-4">
+      <p class="text-sm text-text-300 mb-2">Edit <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">claude_desktop_config.json</code>:</p>
+      <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{
   "mcpServers": {
     "lorekeeper": {
       "url": "http://localhost:3000/mcp"
     }
   }
 }</code></pre>
-      </div>
-      <div class="border-l-2 border-ember-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Cursor / Cursor Agent</h3>
-        <p class="text-sm text-text-300 mb-2">Settings &rarr; MCP &rarr; Add Server &rarr; type <strong>URL</strong>:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>http://localhost:3000/mcp</code></pre>
-      </div>
     </div>
   </div>
 
   <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">
-    <h2 class="text-lg font-semibold text-text-100 mb-1">Connect via stdio</h2>
-    <p class="text-sm text-text-300 mb-5">The MCP client spawns the server as a local process. No web server needed — communicates over stdin/stdout.</p>
-
-    <div class="space-y-5">
-      <div class="border-l-2 border-surface-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Claude Desktop</h3>
-        <p class="text-sm text-text-300 mb-2">Edit <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">claude_desktop_config.json</code>:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{
-  "mcpServers": {
-    "lorekeeper": {
-      "command": "npx",
-      "args": ["tsx", "{{projectPath}}/src/mcp-server.ts"],
-      "env": {
-        "DATABASE_URL": "file:{{projectPath}}/prisma/dev.db"
-      }
-    }
-  }
-}</code></pre>
-      </div>
-      <div class="border-l-2 border-surface-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Claude Code</h3>
-        <p class="text-sm text-text-300 mb-2">Add to <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.claude/settings.json</code>:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{
-  "mcpServers": {
-    "lorekeeper": {
-      "command": "npx",
-      "args": ["tsx", "{{projectPath}}/src/mcp-server.ts"],
-      "env": {
-        "DATABASE_URL": "file:{{projectPath}}/prisma/dev.db"
-      }
-    }
-  }
-}</code></pre>
-      </div>
-      <div class="border-l-2 border-surface-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Cursor / Cursor Agent</h3>
-        <p class="text-sm text-text-300 mb-2">Settings &rarr; MCP &rarr; Add Server &rarr; type <strong>Command</strong>:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>npx tsx {{projectPath}}/src/mcp-server.ts</code></pre>
-        <p class="text-sm text-text-300 mt-2">Set env var: <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">DATABASE_URL=file:{{projectPath}}/prisma/dev.db</code></p>
-      </div>
+    <h2 class="text-lg font-semibold text-text-100 mb-4">Other MCP clients</h2>
+    <div class="border-l-2 border-surface-400 pl-4">
+      <p class="text-sm text-text-300">Any MCP client that supports StreamableHTTP can connect. Point it at:</p>
+      <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm mt-2"><code>http://localhost:3000/mcp</code></pre>
     </div>
   </div>
 </div>
@@ -113,21 +108,29 @@
     <div class="space-y-5">
       <div class="border-l-2 border-ember-400 pl-4">
         <h3 class="font-medium text-text-100 mb-2">Claude Code</h3>
-        <p class="text-sm text-text-300 mb-2">Copy the skill file into your Claude Code skills directory:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>cp {{projectPath}}/skills/lorekeeper-advisor.md ~/.claude/skills/</code></pre>
-        <p class="text-sm text-text-300 mt-2">Then use it with: <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">/skill lorekeeper-advisor</code></p>
+        <p class="text-sm text-text-300 mb-2">Save the skill file to your skills directory:</p>
+        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>mkdir -p ~/.claude/skills/lorekeeper-advisor && curl -o ~/.claude/skills/lorekeeper-advisor/SKILL.md http://localhost:3000/setup/skill-file</code></pre>
+        <p class="text-sm text-text-300 mt-2">Then invoke with: <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">/lorekeeper-advisor</code></p>
       </div>
       <div class="border-l-2 border-ember-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Claude Desktop</h3>
-        <p class="text-sm text-text-300 mb-2">Add the skill file content as a project-level instruction. The file is at:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{{projectPath}}/skills/lorekeeper-advisor.md</code></pre>
+        <h3 class="font-medium text-text-100 mb-2">Cursor</h3>
+        <p class="text-sm text-text-300 mb-2">Save as a Cursor Skill file in your working directory:</p>
+        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>mkdir -p .cursor/skills && curl -o .cursor/skills/lorekeeper-advisor.md http://localhost:3000/setup/cursor-skill-file</code></pre>
+        <p class="text-sm text-text-300 mt-2">Cursor will auto-discover it from the <code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.cursor/skills/</code> directory.</p>
       </div>
       <div class="border-l-2 border-ember-400 pl-4">
-        <h3 class="font-medium text-text-100 mb-2">Cursor / Cursor Agent</h3>
-        <p class="text-sm text-text-300 mb-2">Paste the skill file content into your project rules (<code class="bg-surface-200 px-1.5 py-0.5 rounded text-xs">.cursorrules</code>) or system prompt. The file is at:</p>
-        <pre class="bg-surface-50 text-green-400 rounded-lg p-3 overflow-x-auto text-sm"><code>{{projectPath}}/skills/lorekeeper-advisor.md</code></pre>
+        <h3 class="font-medium text-text-100 mb-2">Claude Desktop / Other</h3>
+        <p class="text-sm text-text-300">Copy the Claude Code skill file content below and paste it as a project-level instruction or system prompt.</p>
       </div>
     </div>
+  </div>
+
+  <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-lg font-semibold text-text-100">Skill file contents</h2>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('skill-content').textContent).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)})" class="text-xs font-medium px-3 py-1.5 rounded bg-ember-500 text-white hover:bg-ember-600 transition-colors">Copy</button>
+    </div>
+    <pre id="skill-content" class="bg-surface-50 text-text-200 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap leading-relaxed"><code>{{skillContent}}</code></pre>
   </div>
 
   <div class="bg-surface-100 rounded-lg border border-surface-300 p-6">

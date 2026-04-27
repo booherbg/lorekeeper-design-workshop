@@ -50,10 +50,32 @@ export async function buildApp() {
 
   app.get("/setup", async (_request, reply) => {
     const projectPath = path.resolve(__dirname, "..");
+    const skillPath = path.join(projectPath, "skills", "lorekeeper-advisor", "SKILL.md");
+    let skillContent = "";
+    try { skillContent = fs.readFileSync(skillPath, "utf-8"); } catch {}
     return reply.view("setup.hbs", {
       projectPath,
+      skillContent,
       crumbs: [{ label: "Setup" }],
     });
+  });
+
+  app.get("/setup/skill-file", async (_request, reply) => {
+    const skillPath = path.join(path.resolve(__dirname, ".."), "skills", "lorekeeper-advisor", "SKILL.md");
+    const content = fs.readFileSync(skillPath, "utf-8");
+    return reply.type("text/plain").send(content);
+  });
+
+  app.get("/setup/cursor-skill-file", async (_request, reply) => {
+    const skillPath = path.join(path.resolve(__dirname, ".."), "skills", "lorekeeper-advisor", "SKILL.md");
+    const content = fs.readFileSync(skillPath, "utf-8");
+    return reply.type("text/plain").send(content);
+  });
+
+  app.get("/setup/install", async (_request, reply) => {
+    const scriptPath = path.join(path.resolve(__dirname, ".."), "scripts", "install.sh");
+    const content = fs.readFileSync(scriptPath, "utf-8");
+    return reply.type("text/plain").send(content);
   });
 
   app.get("/lorekeeper", async (_request, reply) => {
@@ -88,10 +110,10 @@ export async function buildApp() {
       sessionCount = files.filter((f) => f.endsWith(".md")).length;
     } catch {}
 
-    return (reply as any).view("lorekeeper.hbs", {
-      worlds,
-      sessionCount: sessionCount > 0 ? sessionCount : null,
-    }, { layout: false });
+    const templatePath = path.join(__dirname, "views", "lorekeeper.hbs");
+    const template = Handlebars.compile(fs.readFileSync(templatePath, "utf-8"));
+    const html = template({ worlds, sessionCount: sessionCount > 0 ? sessionCount : null });
+    return reply.type("text/html").send(html);
   });
 
   // MCP over HTTP — stateless StreamableHTTP transport
