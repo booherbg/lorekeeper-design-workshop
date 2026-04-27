@@ -111,11 +111,11 @@ Once the core CRUD is working:
 2. State what phase you're in and what's next
 3. Confirm with the user before doing any work
 
-### Context awareness
+### During a session
 
-Pay attention to how much unsaved state is accumulating. If you'd struggle to write a clean handoff prompt because too many decisions or open threads have piled up, suggest wrapping: "We've covered a lot — if we wrap now, I can write a clean handoff and we won't lose context."
+**Log prompts as you go.** After each meaningful exchange, mentally note the user's exact prompt and what you did. Don't wait until wrap time to reconstruct the session from memory — by then, exact wording is lost and you'll paraphrase. The checkpoint log is research data; it must be verbatim. If you're unsure whether you'll remember exact phrasing later, draft the checkpoint entry immediately (you can refine the "what happened" at wrap time, but capture the prompt now).
 
-Don't hard-gate. If the user wants to keep going, keep going. But nudge — committing now means less risk of lost work.
+**Watch for context pressure.** If you'd struggle to write a clean handoff prompt because too many decisions or open threads have piled up, suggest wrapping: "We've covered a lot — if we wrap now, I can write a clean handoff and we won't lose context." Don't hard-gate — if the user wants to keep going, keep going. But nudge.
 
 ### Wrapping a session
 
@@ -132,28 +132,49 @@ When the user signals end of session ("let's wrap up", "that's good for now", "s
    **User level:** [experience summary — e.g., "senior dev, new to TypeScript"]
 
    ## Summary
-   [Narrative arc — what happened, key moments, surprises]
-
-   ## Decisions
-   [Key decisions made and why]
-
-   ## Insights
-   [Things learned — about the process, the tooling, the design]
+   [Narrative arc — what happened, key moments, turning points. This is the story of the session, not a list. What was the user trying to do? What surprised us? What was the most important decision and why?]
 
    ## Accomplished
    [Concrete deliverables — files created, specs written, slices completed]
 
    ## Hand-off
-   [Self-contained prompt for the next session — phase, state, what to read, what's next]
+   [Self-contained prompt for the next session — phase, state, what to read, what's next. Include user level so the next agent can calibrate without re-asking.]
    ```
 
-2. **Checkpoint log.** Ensure every prompt and milestone from this session has an entry in the active log file under `docs/PROMPTS/` (`001.md`, `002.md`, etc.). Each entry: a **Title**, the user's **original prompt** in a blockquote, and a brief **summary** of what was done. These are the granular audit trail — when we review builds together, this is what we'll look at.
+   The summary is a narrative complement to the checkpoint log. Don't duplicate what's already captured entry-by-entry in the checkpoint log — the summary's job is the *arc*, the checkpoint log's job is the *detail*.
 
-3. **Hand-off prompt.** Copy the Hand-off section to `docs/PROMPTS/CURRENT-HANDOFF-PROMPT.md` (overwrite). This is what `start.sh` reads.
+2. **Checkpoint log.** Ensure every prompt and milestone from this session has an entry in the active log file under `docs/PROMPTS/` (`001.md`, `002.md`, etc.). This is the granular audit trail — when we review builds together, this is what we'll look at.
 
-4. **Commit.** Offer to create a commit with all changes. Suggest a message and a tag name (e.g., `session-001`).
+   **Format for each entry:**
 
-5. **Remind them** they can come back anytime — just run `./start.sh`.
+   ```markdown
+   ## N. Title (HH:MM UTC)
+
+   > [user's exact prompt, verbatim — copy-paste, do not paraphrase or clean up]
+
+   **What happened:** [1-3 sentences: what the assistant did, key output, notable decisions or highlights. Capture context a reader needs to understand the exchange without seeing the full response.]
+
+   **Files touched:** [list any files created or modified, if applicable]
+   ```
+
+   **Rules:**
+   - The blockquote MUST be the user's original words, unedited. Typos, shorthand, and all. This is research data — not documentation.
+   - Include the timestamp (HH:MM UTC) in the heading. Use the current time when you receive the prompt.
+   - If the user's prompt includes an image, note `[screenshot]` inline.
+   - If multiple rapid prompts lead to one outcome (e.g., "yes" / "go for it"), group them under one entry but still quote each prompt separately. Use a time range in the heading (e.g., `04:26–04:27 UTC`).
+   - The "what happened" summary replaces the assistant's full response — keep it tight. Capture notable quotes from the assistant if they reveal reasoning, but don't transcribe paragraphs.
+   - Skip pure system interactions (sandbox toggles, permission prompts, interrupted requests) unless they led to a meaningful decision.
+   - **Files touched** is optional — only include when files were created or meaningfully modified.
+
+3. **Verify against session history.** Claude Code stores verbatim conversation history as JSONL files in `~/.claude/projects/<project-path>/`. These are the ground truth — every human prompt, every assistant response, timestamped. After writing the checkpoint log, spot-check your entries against the JSONL to catch any paraphrasing or missed prompts. The extraction script `scripts/extract-sessions-from-jsonl.py` shows how to parse these files. This cross-reference is especially valuable for long sessions where context compression may have degraded recall.
+
+4. **Hand-off prompt.** Copy the Hand-off section to `docs/PROMPTS/CURRENT-HANDOFF-PROMPT.md` (overwrite). This is what `start.sh` reads.
+
+5. **Rebuild session report.** Run `python3 scripts/build-sessions.py` to regenerate `docs/sessions.html` from the checkpoint logs and session summaries.
+
+6. **Commit.** Offer to create a commit with all changes. Suggest a message and a tag name (e.g., `session-001`).
+
+7. **Remind them** they can come back anytime — just run `./start.sh`.
 
 ## Testing
 
