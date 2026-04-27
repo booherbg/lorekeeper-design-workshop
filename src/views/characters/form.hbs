@@ -1,18 +1,18 @@
 {{> breadcrumbs}}
 
-<h1 class="text-2xl font-bold text-ink-900 mb-6">{{#if character}}Edit Character{{else}}New Character{{/if}}</h1>
+<h1 class="text-2xl font-bold text-text-100 mb-6">{{#if character}}Edit Character{{else}}New Character{{/if}}</h1>
 
 <form method="POST" action="{{#if character}}/worlds/{{world.id}}/characters/{{character.id}}/update{{else}}/worlds/{{world.id}}/characters{{/if}}" class="space-y-4 max-w-lg">
-  <div>
-    <label for="name" class="block text-sm font-medium text-ink-700 mb-1">Name</label>
-    <input type="text" id="name" name="name" value="{{#if character}}{{character.name}}{{/if}}" required maxlength="255" class="w-full border border-parchment-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ember-400 focus:border-ember-400 bg-white">
-  </div>
-  <div>
-    <label for="description" class="block text-sm font-medium text-ink-700 mb-1">Description</label>
-    <textarea id="description" name="description" rows="8" required placeholder="Describe this character — personality, appearance, quirks, relationships, anything that makes them who they are." class="w-full border border-parchment-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ember-400 focus:border-ember-400 bg-white">{{#if character}}{{character.description}}{{/if}}</textarea>
-  </div>
-  <div class="flex gap-3">
-    <button type="submit" class="bg-ember-500 text-white px-4 py-2 rounded-lg hover:bg-ember-600 transition-colors">Save</button>
-    <a href="{{#if character}}/worlds/{{world.id}}/characters/{{character.id}}{{else}}/worlds/{{world.id}}/characters{{/if}}" class="px-4 py-2 rounded-lg border border-parchment-200 hover:bg-parchment-100 transition-colors">Cancel</a>
-  </div>
+ <div>
+  <label for="name" class="block text-sm font-medium text-text-200 mb-1">Name</label>
+  <input type="text" id="name" name="name" value="{{#if character}}{{character.name}}{{/if}}" required maxlength="255" class="w-full border border-surface-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ember-400 focus:border-ember-400 bg-surface-100">
+ </div>
+ <div>
+  <label for="description" class="block text-sm font-medium text-text-200 mb-1">Description</label>
+  <textarea id="description" name="description" rows="8" required placeholder="Describe this character — personality, appearance, quirks, relationships, anything that makes them who they are." class="w-full border border-surface-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ember-400 focus:border-ember-400 bg-surface-100">{{#if character}}{{character.description}}{{/if}}</textarea>
+ </div>
+ <div class="flex gap-3">
+  <button type="submit" class="bg-ember-500 text-white px-4 py-2 rounded-lg hover:bg-ember-600 transition-colors">Save</button>
+  <a href="{{#if character}}/worlds/{{world.id}}/characters/{{character.id}}{{else}}/worlds/{{world.id}}/characters{{/if}}" class="px-4 py-2 rounded-lg border border-surface-300 hover:bg-surface-200 transition-colors">Cancel</a>
+ </div>
 </form>

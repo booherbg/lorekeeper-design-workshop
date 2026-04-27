@@ -1,24 +1,24 @@
 {{> breadcrumbs}}
 
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold text-ink-900">Characters</h1>
-  <a href="/worlds/{{world.id}}/characters/new" class="bg-ember-500 text-white px-4 py-2 rounded-lg hover:bg-ember-600 transition-colors">Create Character</a>
+ <h1 class="text-2xl font-bold text-text-100">Characters</h1>
+ <a href="/worlds/{{world.id}}/characters/new" class="bg-ember-500 text-white px-4 py-2 rounded-lg hover:bg-ember-600 transition-colors">Create Character</a>
 </div>
 
 {{#if characters.length}}
-  <div class="grid gap-4">
-    {{#each characters}}
-      <a href="/worlds/{{../world.id}}/characters/{{this.id}}" class="block bg-white rounded-lg shadow-sm border border-parchment-200 p-5 hover:shadow-md hover:border-ember-400 transition-all">
-        <h2 class="text-lg font-semibold text-ink-900">{{this.name}}</h2>
-        <p class="text-ink-700 opacity-75 mt-1">{{truncate this.description 150}}</p>
-      </a>
-    {{/each}}
-  </div>
+ <div class="grid gap-4">
+  {{#each characters}}
+   <a href="/worlds/{{../world.id}}/characters/{{this.id}}" class="block bg-surface-100 rounded-lg border border-surface-300 p-5 hover:shadow-md hover:border-ember-500 transition-all">
+    <h2 class="text-lg font-semibold text-text-100">{{this.name}}</h2>
+    <p class="text-text-200 mt-1">{{truncate this.description 150}}</p>
+   </a>
+  {{/each}}
+ </div>
 {{else}}
-  <div class="text-center py-16">
-    <div class="text-4xl mb-4">👤</div>
-    <p class="text-lg text-ink-700 mb-2">This world needs people.</p>
-    <p class="text-parchment-300 mb-6">Create your first character.</p>
-    <a href="/worlds/{{world.id}}/characters/new" class="bg-ember-500 text-white px-5 py-2.5 rounded-lg hover:bg-ember-600 transition-colors">Create Character</a>
-  </div>
+ <div class="text-center py-16">
+  <div class="text-4xl mb-4">👤</div>
+  <p class="text-lg text-text-200 mb-2">This world needs people.</p>
+  <p class="text-text-300 mb-6">Create your first character.</p>
+  <a href="/worlds/{{world.id}}/characters/new" class="bg-ember-500 text-white px-5 py-2.5 rounded-lg hover:bg-ember-600 transition-colors">Create Character</a>
+ </div>
 {{/if}}

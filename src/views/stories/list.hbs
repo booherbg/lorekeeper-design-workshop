@@ -1,48 +1,48 @@
 {{> breadcrumbs}}
 
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-2xl font-bold text-ink-900">Stories</h1>
+ <h1 class="text-2xl font-bold text-text-100">Stories</h1>
 </div>
 
 {{#if stories.length}}
-  <div class="space-y-4">
-    {{#each stories}}
-      <a href="/worlds/{{../world.id}}/stories/{{this.id}}" class="block bg-white rounded-lg shadow-sm border border-parchment-200 p-5 hover:shadow-md hover:border-ember-400 transition-all">
-        <div class="flex items-start justify-between">
-          <h2 class="text-lg font-semibold text-ink-900">{{this.title}}</h2>
-          <span class="text-sm text-parchment-300 ml-4 whitespace-nowrap">{{formatDate this.createdAt}}</span>
-        </div>
-        <p class="text-ink-700 opacity-75 mt-2">{{truncate this.content 200}}</p>
-        {{#if this.storyCharacters.length}}
-          <div class="flex flex-wrap gap-1.5 mt-3">
-            {{#each this.storyCharacters}}
-              <span class="inline-block bg-parchment-100 text-ink-700 text-xs px-2 py-0.5 rounded-full border border-parchment-200">{{this.character.name}}</span>
-            {{/each}}
-          </div>
-        {{/if}}
-      </a>
-    {{/each}}
-  </div>
+ <div class="space-y-4">
+  {{#each stories}}
+   <a href="/worlds/{{../world.id}}/stories/{{this.id}}" class="block bg-surface-100 rounded-lg border border-surface-300 p-5 hover:shadow-md hover:border-ember-500 transition-all">
+    <div class="flex items-start justify-between">
+     <h2 class="text-lg font-semibold text-text-100">{{this.title}}</h2>
+     <span class="text-sm text-text-300 ml-4 whitespace-nowrap">{{formatDate this.createdAt}}</span>
+    </div>
+    <p class="text-text-200 mt-2">{{truncate this.content 200}}</p>
+    {{#if this.storyCharacters.length}}
+     <div class="flex flex-wrap gap-1.5 mt-3">
+      {{#each this.storyCharacters}}
+       <span class="inline-block bg-surface-200 text-text-200 text-xs px-2 py-0.5 rounded-full border border-surface-300">{{this.character.name}}</span>
+      {{/each}}
+     </div>
+    {{/if}}
+   </a>
+  {{/each}}
+ </div>
 {{else}}
-  <div class="text-center py-16">
-    <div class="text-4xl mb-4">✨</div>
-    <p class="text-xl font-semibold text-ink-900 mb-4">Your world is waiting for its first story.</p>
-    <ol class="text-left max-w-md mx-auto text-ink-700 space-y-3 mb-6">
-      <li class="flex gap-3">
-        <span class="font-bold text-ember-500">1.</span>
-        <span><strong>Set up the AI advisor</strong> — connect Claude to Lorekeeper's MCP server. <a href="/setup" class="text-ember-500 hover:text-ember-700 underline">Setup guide</a></span>
-      </li>
-      <li class="flex gap-3">
-        <span class="font-bold text-ember-500">2.</span>
-        <span><strong>Ask for a story</strong> — tell the advisor something like: "Tell me a bedtime story about [character] at [location]"</span>
-      </li>
-      <li class="flex gap-3">
-        <span class="font-bold text-ember-500">3.</span>
-        <span><strong>Review and keep</strong> — your story appears here, along with lore artifacts you can keep or discard</span>
-      </li>
-    </ol>
-    {{#unless hasCharactersOrLocations}}
-      <p class="text-sm text-parchment-300">Tip: create some characters and locations first — they give the AI material to work with.</p>
-    {{/unless}}
-  </div>
+ <div class="text-center py-16">
+  <div class="text-4xl mb-4">✨</div>
+  <p class="text-xl font-semibold text-text-100 mb-4">Your world is waiting for its first story.</p>
+  <ol class="text-left max-w-md mx-auto text-text-200 space-y-3 mb-6">
+   <li class="flex gap-3">
+    <span class="font-bold text-ember-400">1.</span>
+    <span><strong>Set up the AI advisor</strong> — connect Claude to Lorekeeper's MCP server. <a href="/setup" class="text-ember-400 hover:text-ember-500 underline">Setup guide</a></span>
+   </li>
+   <li class="flex gap-3">
+    <span class="font-bold text-ember-400">2.</span>
+    <span><strong>Ask for a story</strong> — tell the advisor something like: "Tell me a bedtime story about [character] at [location]"</span>
+   </li>
+   <li class="flex gap-3">
+    <span class="font-bold text-ember-400">3.</span>
+    <span><strong>Review and keep</strong> — your story appears here, along with lore artifacts you can keep or discard</span>
+   </li>
+  </ol>
+  {{#unless hasCharactersOrLocations}}
+   <p class="text-sm text-text-300">Tip: create some characters and locations first — they give the AI material to work with.</p>
+  {{/unless}}
+ </div>
 {{/if}}
